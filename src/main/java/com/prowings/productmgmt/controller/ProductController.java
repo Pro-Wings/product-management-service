@@ -1,0 +1,96 @@
+package com.prowings.productmgmt.controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.prowings.productmgmt.model.Product;
+import com.prowings.productmgmt.service.ProductService;
+
+import jakarta.validation.Valid;
+
+@RestController
+public class ProductController {
+
+	private ProductService service;
+
+	@Autowired
+	public ProductController(ProductService service) {
+		super();
+		this.service = service;
+	}
+
+	// ✅ CREATE PRODUCT
+	@PostMapping(value = "/products", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
+	public ResponseEntity<?> create(@Valid @RequestBody Product product, BindingResult bindingResult) {
+
+		if (bindingResult.hasErrors()) {
+			return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
+		}
+
+		Product saved = service.create(product);
+
+		return ResponseEntity.status(201).body(saved);
+	}
+
+	// ✅ GET PRODUCT BY ID
+	@GetMapping("/products/{id}")
+	public ResponseEntity<Product> getById(@PathVariable("id") Long id) {
+
+		Product product = service.getById(id);
+
+		return ResponseEntity.ok(product);
+	}
+
+	// ✅ GET ALL (with pagination)
+	@GetMapping("/products")
+	public ResponseEntity<List<Product>> getAll(@RequestParam(defaultValue = "0") int page,
+			@RequestParam(defaultValue = "5") int size) {
+
+		List<Product> products = service.getAll(page, size);
+
+		return ResponseEntity.ok(products);
+	}
+
+	// 🔥 SEARCH + FILTER + SORT + PAGINATION
+//	@GetMapping("/search")
+//	public ResponseEntity<List<Product>> search(@RequestParam(required = false) String name,
+//			@RequestParam(required = false) String category, @RequestParam(defaultValue = "0") int page,
+//			@RequestParam(defaultValue = "5") int size, @RequestParam(defaultValue = "createdAt") String sortBy,
+//			@RequestParam(defaultValue = "desc") String sortDir) {
+//
+//		List<Product> products = service.search(name, category, page, size, sortBy, sortDir);
+//
+//		return ResponseEntity.ok(products);
+//	}
+
+	// ✅ UPDATE PRODUCT
+	@PutMapping("/products/{id}")
+	public ResponseEntity<Product> update(@PathVariable Long id, @Valid @RequestBody Product product) {
+
+		Product updated = service.update(id, product);
+
+		return ResponseEntity.ok(updated);
+	}
+
+	// ✅ DELETE PRODUCT (Soft Delete)
+	@DeleteMapping("/products/{id}")
+	public ResponseEntity<Void> delete(@PathVariable Long id) {
+
+		service.delete(id);
+
+		return ResponseEntity.noContent().build();
+	}
+
+}
