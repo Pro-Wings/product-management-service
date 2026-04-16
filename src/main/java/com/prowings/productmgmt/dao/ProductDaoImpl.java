@@ -45,46 +45,47 @@ public class ProductDaoImpl implements ProductDao{
         return query.list();
     }
 
+    
     // 🔥 SEARCH + SORT + PAGINATION (CORE)
-//    @Override
-//    public List<Product> search(String name, String category,
-//                               int page, int size,
-//                               String sortBy, String sortDir) {
-//
-//        StringBuilder hql = new StringBuilder("FROM Product p WHERE p.isActive = true ");
-//
-//        // 🔹 Dynamic filters
-//        if (name != null && !name.isBlank()) {
-//            hql.append("AND lower(p.name) LIKE :name ");
-//        }
-//
-//        if (category != null && !category.isBlank()) {
-//            hql.append("AND lower(p.category) = :category ");
-//        }
-//
-//        // 🔹 Sorting
-//        if (sortBy != null && !sortBy.isBlank()) {
-//            hql.append("ORDER BY p.").append(sortBy).append(" ");
-//            hql.append("asc".equalsIgnoreCase(sortDir) ? "ASC " : "DESC ");
-//        }
-//
-//        Query<Product> query = getSession().createQuery(hql.toString(), Product.class);
-//
-//        // 🔹 Set parameters
-//        if (name != null && !name.isBlank()) {
-//            query.setParameter("name", "%" + name.toLowerCase() + "%");
-//        }
-//
-//        if (category != null && !category.isBlank()) {
-//            query.setParameter("category", category.toLowerCase());
-//        }
-//
-//        // 🔹 Pagination
-//        query.setFirstResult(page * size);
-//        query.setMaxResults(size);
-//
-//        return query.list();
-//    }
+    @Override
+    public List<Product> search(String name, String category,
+                               int page, int size,
+                               String sortBy, String sortDir) {
+
+        StringBuilder hql = new StringBuilder("FROM Product p WHERE p.isActive = true ");
+
+        // 🔹 Dynamic filters
+        if (name != null && !name.isBlank()) {
+            hql.append("AND lower(p.name) LIKE :name ");
+        }
+
+        if (category != null && !category.isBlank()) {
+            hql.append("AND lower(p.category) = :category ");
+        }
+
+        // 🔹 Sorting
+        if (sortBy != null && !sortBy.isBlank()) {
+            hql.append("ORDER BY p.").append(sortBy).append(" ");
+            hql.append("asc".equalsIgnoreCase(sortDir) ? "ASC " : "DESC ");
+        }
+
+        Query<Product> query = getSession().createQuery(hql.toString(), Product.class);
+
+        // 🔹 Set parameters
+        if (name != null && !name.isBlank()) {
+            query.setParameter("name", "%" + name.toLowerCase() + "%");
+        }
+
+        if (category != null && !category.isBlank()) {
+            query.setParameter("category", category.toLowerCase());
+        }
+
+        // 🔹 Pagination
+        query.setFirstResult(page * size);
+        query.setMaxResults(size);
+
+        return query.list();
+    }
 
     // ✅ UPDATE
     @Override

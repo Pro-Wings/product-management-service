@@ -12,9 +12,9 @@ public interface ProductService {
 
     List<Product> getAll(int page, int size);
 
-//    List<Product> search(String name, String category,
-//                         int page, int size,
-//                         String sortBy, String sortDir);
+    List<Product> search(String name, String category,
+                         int page, int size,
+                         String sortBy, String sortDir);
 
     Product update(Long id, Product product);
 

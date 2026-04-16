@@ -55,8 +55,8 @@ public class ProductController {
 
 	// ✅ GET ALL (with pagination)
 	@GetMapping("/products")
-	public ResponseEntity<List<Product>> getAll(@RequestParam(defaultValue = "0") int page,
-			@RequestParam(defaultValue = "5") int size) {
+	public ResponseEntity<List<Product>> getAll(@RequestParam(name = "page", defaultValue = "0") int page,
+			@RequestParam(name = "size", defaultValue = "5") int size) {
 
 		List<Product> products = service.getAll(page, size);
 
@@ -64,20 +64,22 @@ public class ProductController {
 	}
 
 	// 🔥 SEARCH + FILTER + SORT + PAGINATION
-//	@GetMapping("/search")
-//	public ResponseEntity<List<Product>> search(@RequestParam(required = false) String name,
-//			@RequestParam(required = false) String category, @RequestParam(defaultValue = "0") int page,
-//			@RequestParam(defaultValue = "5") int size, @RequestParam(defaultValue = "createdAt") String sortBy,
-//			@RequestParam(defaultValue = "desc") String sortDir) {
-//
-//		List<Product> products = service.search(name, category, page, size, sortBy, sortDir);
-//
-//		return ResponseEntity.ok(products);
-//	}
+	@GetMapping("/products/search")
+	public ResponseEntity<List<Product>> search(@RequestParam(name = "name",required = false) String name,
+			@RequestParam(name = "category",required = false) String category, 
+			@RequestParam(name = "page",defaultValue = "0") int page,
+			@RequestParam(name = "size",defaultValue = "5") int size, 
+			@RequestParam(name = "sortBy",defaultValue = "createdAt") String sortBy,
+			@RequestParam(name = "sortDir",defaultValue = "desc") String sortDir) {
+
+		List<Product> products = service.search(name, category, page, size, sortBy, sortDir);
+
+		return ResponseEntity.ok(products);
+	}
 
 	// ✅ UPDATE PRODUCT
 	@PutMapping("/products/{id}")
-	public ResponseEntity<Product> update(@PathVariable Long id, @Valid @RequestBody Product product) {
+	public ResponseEntity<Product> update(@PathVariable("id") Long id, @Valid @RequestBody Product product) {
 
 		Product updated = service.update(id, product);
 
@@ -86,7 +88,7 @@ public class ProductController {
 
 	// ✅ DELETE PRODUCT (Soft Delete)
 	@DeleteMapping("/products/{id}")
-	public ResponseEntity<Void> delete(@PathVariable Long id) {
+	public ResponseEntity<Void> delete(@PathVariable("id") Long id) {
 
 		service.delete(id);
 

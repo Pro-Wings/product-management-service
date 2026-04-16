@@ -12,7 +12,7 @@ public interface ProductDao {
 
 	List<Product> getAll(int page, int size);
 
-//	List<Product> search(String name, String category, int page, int size, String sortBy, String sortDir);
+	List<Product> search(String name, String category, int page, int size, String sortBy, String sortDir);
 
 	void update(Product product);
 

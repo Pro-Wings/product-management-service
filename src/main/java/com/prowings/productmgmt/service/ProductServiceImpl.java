@@ -52,11 +52,11 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 //	// ✅ SEARCH
-//	@Override
-//	public List<Product> search(String name, String category, int page, int size, String sortBy, String sortDir) {
-//
-//		return dao.search(name, category, page, size, sortBy, sortDir);
-//	}
+	@Override
+	public List<Product> search(String name, String category, int page, int size, String sortBy, String sortDir) {
+
+		return dao.search(name, category, page, size, sortBy, sortDir);
+	}
 
 	// ✅ UPDATE
 	@Override
