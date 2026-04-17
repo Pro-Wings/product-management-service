@@ -28,13 +28,13 @@ public class Product {
     @Column(length = 1000)
     private String description;
 
-    @NotNull
-    @DecimalMin(value = "0.1", message = "Price must be > 0")
+//    @NotNull
+//    @DecimalMin(value = "0.1", message = "Price must be > 0")
     @Column(nullable = false)
     private BigDecimal price;
 
-    @NotNull
-    @Min(value = 0, message = "Stock cannot be negative")
+//    @NotNull
+//    @Min(value = 0, message = "Stock cannot be negative")
     @Column(nullable = false)
     private Integer stock;
 

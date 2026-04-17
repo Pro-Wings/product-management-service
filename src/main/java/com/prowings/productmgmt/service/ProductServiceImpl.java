@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.prowings.productmgmt.dao.ProductDao;
+import com.prowings.productmgmt.exception.ProductNotFoundException;
+import com.prowings.productmgmt.exception.ProductValidationException;
 import com.prowings.productmgmt.model.Product;
 
 @Service
@@ -39,7 +41,7 @@ public class ProductServiceImpl implements ProductService {
 		Product product = dao.getById(id);
 
 		if (product == null || Boolean.FALSE.equals(product.getIsActive())) {
-			throw new RuntimeException("Product not found with id: " + id);
+			throw new ProductNotFoundException("Product not found with id: " + id);
 		}
 
 		return product;
@@ -65,7 +67,7 @@ public class ProductServiceImpl implements ProductService {
 		Product existing = dao.getById(id);
 
 		if (existing == null || Boolean.FALSE.equals(existing.getIsActive())) {
-			throw new RuntimeException("Product not found with id: " + id);
+			throw new ProductNotFoundException("Product not found with id: " + id);
 		}
 
 		validateProduct(updatedProduct);
@@ -90,7 +92,7 @@ public class ProductServiceImpl implements ProductService {
 		Product product = dao.getById(id);
 
 		if (product == null || Boolean.FALSE.equals(product.getIsActive())) {
-			throw new RuntimeException("Product not found with id: " + id);
+			throw new ProductNotFoundException("Product not found with id: " + id);
 		}
 
 		dao.delete(id);
@@ -101,12 +103,12 @@ public class ProductServiceImpl implements ProductService {
 
 		// Price validation
 		if (product.getPrice() == null || product.getPrice().compareTo(BigDecimal.ZERO) <= 0) {
-			throw new RuntimeException("Price must be greater than 0");
+			throw new ProductValidationException("Price must be greater than 0");
 		}
 
 		// Stock validation
 		if (product.getStock() == null || product.getStock() < 0) {
-			throw new RuntimeException("Stock cannot be negative");
+			throw new ProductValidationException("Stock cannot be negative");
 		}
 	}
 
