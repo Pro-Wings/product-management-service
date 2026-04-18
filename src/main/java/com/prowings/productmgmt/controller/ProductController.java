@@ -39,11 +39,7 @@ public class ProductController {
 
 	// ✅ CREATE PRODUCT
 	@PostMapping(value = "/products", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
-	public ResponseEntity<?> create(@Valid @RequestBody Product product, BindingResult bindingResult) {
-
-		if (bindingResult.hasErrors()) {
-			return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
-		}
+	public ResponseEntity<?> create(@Valid @RequestBody Product product) {
 
 		Product saved = service.create(product);
 
@@ -102,20 +98,5 @@ public class ProductController {
 	}
 
 	
-	@ExceptionHandler(Exception.class)
-	public ResponseEntity<CustomErrorResponse> handleRuntimeException(Exception e)
-	{
-		CustomErrorResponse errorResponse = new CustomErrorResponse(404, e.getMessage(), LocalDateTime.now());
-		
-		return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
-	}
-
-	@ExceptionHandler(ProductValidationException.class)
-	public ResponseEntity<CustomErrorResponse> handleValidationException(ProductValidationException e)
-	{
-		CustomErrorResponse errorResponse = new CustomErrorResponse(400, e.getMessage(), LocalDateTime.now());
-		
-		return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
-	}
 	
 }
