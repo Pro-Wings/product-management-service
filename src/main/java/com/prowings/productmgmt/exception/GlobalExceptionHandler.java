@@ -45,29 +45,29 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler{
 //    }
 	
 	
-	@ExceptionHandler(MethodArgumentNotValidException.class)
-	public ResponseEntity<CustomErrorResponse> handleMethodArgumentNotValidException(
-			MethodArgumentNotValidException e) {
-
-		System.out.println("Validation Error stacktrace :---------- ");
-		e.printStackTrace();
-		System.out.println("--------------------------------------- ");
-
-//		String error = e.getBindingResult().getFieldError().getDefaultMessage();
-		Map<String, String> errors = new HashMap();
-
-		// Loop through all the errors Spring found and put them in our Map
-		e.getBindingResult().getAllErrors().forEach((error) -> {
-			String fieldName = ((FieldError) error).getField();
-			String errorMessage = error.getDefaultMessage();
-			errors.put(fieldName, errorMessage);
-		});
-
-		CustomErrorResponse errorResponse = new CustomErrorResponse(400, "Field validation errors!!",
-				LocalDateTime.now(), errors);
-
-		return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
-	}
+//	@ExceptionHandler(MethodArgumentNotValidException.class)
+//	public ResponseEntity<CustomErrorResponse> handleMethodArgumentNotValidException(
+//			MethodArgumentNotValidException e) {
+//
+//		System.out.println("Validation Error stacktrace :---------- ");
+//		e.printStackTrace();
+//		System.out.println("--------------------------------------- ");
+//
+////		String error = e.getBindingResult().getFieldError().getDefaultMessage();
+//		Map<String, String> errors = new HashMap();
+//
+//		// Loop through all the errors Spring found and put them in our Map
+//		e.getBindingResult().getAllErrors().forEach((error) -> {
+//			String fieldName = ((FieldError) error).getField();
+//			String errorMessage = error.getDefaultMessage();
+//			errors.put(fieldName, errorMessage);
+//		});
+//
+//		CustomErrorResponse errorResponse = new CustomErrorResponse(400, "Field validation errors!!",
+//				LocalDateTime.now(), errors);
+//
+//		return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+//	}
 
 //	@ExceptionHandler(Exception.class)
 //	public ResponseEntity<CustomErrorResponse> handleRuntimeException(Exception e) {

@@ -5,6 +5,7 @@ import java.util.Properties;
 import javax.sql.DataSource;
 
 import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -13,13 +14,26 @@ import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import com.prowings.productmgmt.interceptor.LoggingInteceptor;
 
 @Configuration
 @ComponentScan(basePackages = "com.prowings.productmgmt")
 @EnableWebMvc
 @EnableTransactionManagement
-public class WebConfig {
+public class WebConfig implements WebMvcConfigurer {
 	
+    @Autowired
+    private LoggingInteceptor interceptor;
+
+	
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(interceptor);
+    }
+    
     // ✅ DataSource
     @Bean
     public DataSource dataSource() {

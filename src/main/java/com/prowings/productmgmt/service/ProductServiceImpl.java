@@ -12,8 +12,11 @@ import com.prowings.productmgmt.exception.ProductNotFoundException;
 import com.prowings.productmgmt.exception.ProductValidationException;
 import com.prowings.productmgmt.model.Product;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Service
 @Transactional
+@Slf4j
 public class ProductServiceImpl implements ProductService {
 
 	private ProductDao dao;
@@ -38,12 +41,21 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public Product getById(Long id) {
 
+		log.info("---inside getById() of service class ---");
+
+		log.info("---fetching product of given id : {} from database ---",id);
+		
 		Product product = dao.getById(id);
+		
 
 		if (product == null || Boolean.FALSE.equals(product.getIsActive())) {
+			log.error("!!! Product of given id: {} not exist in DB !!!");
+			
 			throw new ProductNotFoundException("Product not found with id: " + id);
 		}
 
+		log.info("---fetched product of given id : {} from database successfully---",id);
+		
 		return product;
 	}
 

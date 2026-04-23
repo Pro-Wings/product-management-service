@@ -10,7 +10,10 @@ import org.springframework.stereotype.Repository;
 
 import com.prowings.productmgmt.model.Product;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Repository
+@Slf4j
 public class ProductDaoImpl implements ProductDao{
 
     @Autowired
@@ -29,6 +32,7 @@ public class ProductDaoImpl implements ProductDao{
     // ✅ GET BY ID
     @Override
     public Product getById(Long id) {
+    	log.info("--- inside getById() of ProductDao ---");
         return getSession().get(Product.class, id);
     }
 
