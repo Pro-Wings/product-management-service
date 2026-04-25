@@ -2,6 +2,10 @@ package com.prowings.productmgmt.config;
 
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
+import com.prowings.productmgmt.interceptor.LoggingFilter;
+
+import jakarta.servlet.Filter;
+
 //this class is replacement of web.xml
 
 public class MyWebAppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer{
@@ -25,5 +29,12 @@ public class MyWebAppInitializer extends AbstractAnnotationConfigDispatcherServl
 		return mappings;
 	}
 
+	@Override
+	protected Filter[] getServletFilters() {
+
+	    return new Filter[] {
+	            new LoggingFilter()
+	    };
+	}
 
 }

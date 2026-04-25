@@ -41,8 +41,7 @@ public class ProductController {
 	@PostMapping(value = "/products", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
 	public ResponseEntity<?> create(@Valid @RequestBody Product product) throws JsonProcessingException {
 
-		String payload = objectMapper.writeValueAsString(product);
-		log.info("Request received for create new product : {}", payload);
+		log.info("Request received for create new product");
 		Product saved = service.create(product);
 
 		return ResponseEntity.status(201).body(saved);
